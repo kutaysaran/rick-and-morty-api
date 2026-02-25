@@ -1,7 +1,7 @@
 "use client";
 
 import { useCharactersQueryState } from "../use-characters-query-state";
-import { CHARACTER_STATUS_VALUES, type CharacterStatusParam } from "../characters-query-parsers";
+import { CHARACTER_STATUS_VALUES, type CharacterStatusParam } from "../characters-query-values";
 import {
   Select,
   SelectContent,

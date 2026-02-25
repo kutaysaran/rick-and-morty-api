@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { GetCharactersParams } from "@/lib/api/rick-and-morty/characters";
 import { getCharacters } from "@/lib/api/rick-and-morty/characters";
+import { charactersQueryKey } from "@/lib/api/rick-and-morty/characters-query-key";
 import { getQueryClient } from "@/lib/react-query/query-client";
-import { charactersQueryKey } from "@/hooks/use-characters";
 import { CharactersPageClient } from "./CharactersPageClient";
 import {
   loadCharactersSearchParams,
@@ -12,9 +12,9 @@ import {
 export default async function CharactersPage({
   searchParams,
 }: {
-  searchParams: CharactersSearchParams;
+  searchParams: Promise<CharactersSearchParams>;
 }) {
-  const parsed = loadCharactersSearchParams(searchParams);
+  const parsed = await loadCharactersSearchParams(searchParams);
 
   const params: GetCharactersParams = { page: parsed.page };
   if (parsed.status) params.status = parsed.status;
