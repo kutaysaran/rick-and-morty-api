@@ -53,7 +53,11 @@ export interface ApiClient {
   get: <T>(path: string, options?: { query?: QueryParams; signal?: AbortSignal }) => Promise<T>;
 }
 
-export function createApiClient(args: { baseUrl: string; fetchFn?: typeof fetch }): ApiClient {
+export function createApiClient(args: {
+  baseUrl: string;
+  fetchFn?: typeof fetch;
+  defaultFetchOptions?: Pick<RequestInit, "cache">;
+}): ApiClient {
   const fetchFn = args.fetchFn ?? fetch;
 
   return {
@@ -67,6 +71,7 @@ export function createApiClient(args: { baseUrl: string; fetchFn?: typeof fetch 
       const response = await fetchFn(url, {
         method: "GET",
         signal: options?.signal ?? null,
+        ...(args.defaultFetchOptions?.cache ? { cache: args.defaultFetchOptions.cache } : {}),
         headers: {
           accept: "application/json",
         },

@@ -1,9 +1,5 @@
-import { createApiClient } from "@/lib/api/client";
 import type { RickAndMortyApiResponse, Character } from "@/types/rick-and-morty";
-
-const rickAndMortyClient = createApiClient({
-  baseUrl: "https://rickandmortyapi.com/api/",
-});
+import { rickAndMortyClient } from "./client";
 
 export interface GetCharactersParams {
   status?: string;
