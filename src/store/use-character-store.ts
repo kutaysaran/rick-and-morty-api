@@ -4,15 +4,11 @@ interface CharacterStoreState {
   selectedCharacterIds: ReadonlySet<number>;
 
   activeCharacterId: number | null;
-  isSelectionMode: boolean;
 
   actions: {
     select: (characterId: number) => void;
     deselect: (characterId: number) => void;
     toggleSelected: (characterId: number) => void;
-    clearSelection: () => void;
-    setSelectionMode: (isEnabled: boolean) => void;
-
     setActiveCharacter: (characterId: number | null) => void;
   };
 }
@@ -21,7 +17,6 @@ export const useCharacterStore = create<CharacterStoreState>((set, get) => ({
   selectedCharacterIds: new Set<number>(),
 
   activeCharacterId: null,
-  isSelectionMode: false,
 
   actions: {
     select: (characterId) =>
@@ -46,14 +41,6 @@ export const useCharacterStore = create<CharacterStoreState>((set, get) => ({
         if (next.has(characterId)) next.delete(characterId);
         else next.add(characterId);
         return { selectedCharacterIds: next };
-      }),
-
-    clearSelection: () => set({ selectedCharacterIds: new Set<number>() }),
-
-    setSelectionMode: (isEnabled) =>
-      set((state) => {
-        if (state.isSelectionMode === isEnabled) return state;
-        return { isSelectionMode: isEnabled };
       }),
 
     setActiveCharacter: (characterId) => {

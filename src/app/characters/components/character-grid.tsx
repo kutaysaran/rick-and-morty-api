@@ -4,12 +4,10 @@ import { CharacterCard } from "./character-card";
 export function CharacterGrid({
   characters,
   isSelected,
-  isSelectionMode,
   onToggleSelected,
 }: {
   characters: Character[];
   isSelected: (characterId: number) => boolean;
-  isSelectionMode: boolean;
   onToggleSelected: (characterId: number) => void;
 }) {
   return (
@@ -19,9 +17,7 @@ export function CharacterGrid({
           <CharacterCard
             character={character}
             isSelected={isSelected(character.id)}
-            isSelectionMode={isSelectionMode}
             onClick={() => {
-              if (!isSelectionMode) return;
               onToggleSelected(character.id);
             }}
           />

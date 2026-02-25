@@ -15,19 +15,17 @@ function getStatusBadgeVariant(
 export function CharacterCard({
   character,
   isSelected,
-  isSelectionMode,
   onClick,
 }: {
   character: Character;
   isSelected: boolean;
-  isSelectionMode: boolean;
   onClick: () => void;
 }) {
   return (
     <Card
       className={cn(
         "group overflow-hidden transition-colors",
-        isSelectionMode && "cursor-pointer select-none hover:border-primary/60",
+        "cursor-pointer select-none hover:border-primary/60",
         isSelected && "border-primary ring-1 ring-primary/30",
       )}
       onClick={onClick}

@@ -10,14 +10,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function GenderFilter() {
+export function GenderFilter({
+  variant = "stacked",
+}: {
+  variant?: "stacked" | "inline";
+} = {}) {
   const [{ gender }, setQuery] = useCharactersQueryState();
 
   const value = gender ?? "all";
+  const triggerClassName = variant === "inline" ? "h-9 w-[160px]" : "w-full sm:w-[220px]";
 
   return (
-    <div className="space-y-1">
-      <div className="text-sm font-medium">Gender</div>
+    <div className={variant === "inline" ? "flex items-center gap-2" : "space-y-1"}>
+      <div
+        className={
+          variant === "inline"
+            ? "min-w-12 text-xs font-medium text-muted-foreground"
+            : "text-sm font-medium"
+        }
+      >
+        Gender
+      </div>
       <Select
         value={value}
         onValueChange={(next) => {
@@ -25,7 +38,7 @@ export function GenderFilter() {
           void setQuery({ gender: nextGender, page: 1 });
         }}
       >
-        <SelectTrigger className="w-full sm:w-[220px]">
+        <SelectTrigger className={triggerClassName}>
           <SelectValue placeholder="All genders" />
         </SelectTrigger>
         <SelectContent>
