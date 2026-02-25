@@ -1,39 +1,42 @@
 "use client";
 
-import * as React from "react";
 import { useCharactersQueryState } from "../use-characters-query-state";
 import { CHARACTER_STATUS_VALUES, type CharacterStatusParam } from "../characters-query-parsers";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function StatusFilter() {
   const [{ status }, setQuery] = useCharactersQueryState();
 
-  const value = status ?? "";
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const next = event.target.value;
-    const nextStatus = next === "" ? null : (next as CharacterStatusParam);
-
-    void setQuery({
-      status: nextStatus,
-      page: 1,
-    });
-  };
+  const value = status ?? "all";
 
   return (
-    <label className="flex flex-col gap-1">
-      <span className="text-sm font-medium">Status</span>
-      <select
-        className="h-9 rounded-md border bg-background px-3 text-sm"
+    <div className="space-y-1">
+      <div className="text-sm font-medium">Status</div>
+      <Select
         value={value}
-        onChange={handleChange}
+        onValueChange={(next) => {
+          const nextStatus = next === "all" ? null : (next as CharacterStatusParam);
+          void setQuery({ status: nextStatus, page: 1 });
+        }}
       >
-        <option value="">All</option>
-        {CHARACTER_STATUS_VALUES.map((s) => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </select>
-    </label>
+        <SelectTrigger className="w-full sm:w-[220px]">
+          <SelectValue placeholder="All statuses" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All</SelectItem>
+          {CHARACTER_STATUS_VALUES.map((s) => (
+            <SelectItem key={s} value={s}>
+              {s}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

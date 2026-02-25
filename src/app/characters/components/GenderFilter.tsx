@@ -1,39 +1,42 @@
 "use client";
 
-import * as React from "react";
 import { useCharactersQueryState } from "../use-characters-query-state";
 import { CHARACTER_GENDER_VALUES, type CharacterGenderParam } from "../characters-query-parsers";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function GenderFilter() {
   const [{ gender }, setQuery] = useCharactersQueryState();
 
-  const value = gender ?? "";
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const next = event.target.value;
-    const nextGender = next === "" ? null : (next as CharacterGenderParam);
-
-    void setQuery({
-      gender: nextGender,
-      page: 1,
-    });
-  };
+  const value = gender ?? "all";
 
   return (
-    <label className="flex flex-col gap-1">
-      <span className="text-sm font-medium">Gender</span>
-      <select
-        className="h-9 rounded-md border bg-background px-3 text-sm"
+    <div className="space-y-1">
+      <div className="text-sm font-medium">Gender</div>
+      <Select
         value={value}
-        onChange={handleChange}
+        onValueChange={(next) => {
+          const nextGender = next === "all" ? null : (next as CharacterGenderParam);
+          void setQuery({ gender: nextGender, page: 1 });
+        }}
       >
-        <option value="">All</option>
-        {CHARACTER_GENDER_VALUES.map((g) => (
-          <option key={g} value={g}>
-            {g}
-          </option>
-        ))}
-      </select>
-    </label>
+        <SelectTrigger className="w-full sm:w-[220px]">
+          <SelectValue placeholder="All genders" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All</SelectItem>
+          {CHARACTER_GENDER_VALUES.map((g) => (
+            <SelectItem key={g} value={g}>
+              {g}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
