@@ -1,9 +1,13 @@
 import type { RickAndMortyApiResponse, Character } from "@/types/rick-and-morty";
 import { rickAndMortyClient } from "./client";
+import type {
+  CharacterGenderParam,
+  CharacterStatusParam,
+} from "@/lib/api/rick-and-morty/character-query-params";
 
 export interface GetCharactersParams {
-  status?: string;
-  gender?: string;
+  status?: CharacterStatusParam;
+  gender?: CharacterGenderParam;
   page?: number;
 }
 
