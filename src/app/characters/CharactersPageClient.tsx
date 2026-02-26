@@ -134,7 +134,6 @@ export function CharactersPageClient() {
             </Button>
           </div>
           <Badge variant="secondary">Selected: {selectedCount}</Badge>
-          <span className="text-xs text-muted-foreground">Selections persist across pages.</span>
         </div>
       </div>
 
