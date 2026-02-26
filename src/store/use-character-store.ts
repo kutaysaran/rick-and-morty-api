@@ -10,6 +10,7 @@ interface CharacterStoreState {
     deselect: (characterId: number) => void;
     toggleSelected: (characterId: number) => void;
     setActiveCharacter: (characterId: number | null) => void;
+    clearSelection: () => void;
   };
 }
 
@@ -48,5 +49,7 @@ export const useCharacterStore = create<CharacterStoreState>((set, get) => ({
       if (prev === characterId) return;
       set({ activeCharacterId: characterId });
     },
+
+    clearSelection: () => set({ selectedCharacterIds: new Set<number>(), activeCharacterId: null }),
   },
 }));

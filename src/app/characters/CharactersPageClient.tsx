@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { GetCharactersParams } from "@/lib/api/rick-and-morty/characters";
 import { useCharacters } from "@/hooks/use-characters";
 import { useCharactersQueryState } from "./use-characters-query-state";
@@ -19,6 +19,7 @@ export function CharactersPageClient() {
   const selectedIds = useCharacterStore((state) => state.selectedCharacterIds);
   const selectedCount = selectedIds.size;
   const toggleSelected = useCharacterStore((state) => state.actions.toggleSelected);
+  const clearSelection = useCharacterStore((state) => state.actions.clearSelection);
   const isSelected = React.useCallback(
     (characterId: number) => selectedIds.has(characterId),
     [selectedIds],
@@ -133,6 +134,7 @@ export function CharactersPageClient() {
             </Button>
           </div>
           <Badge variant="secondary">Selected: {selectedCount}</Badge>
+          <span className="text-xs text-muted-foreground">Selections persist across pages.</span>
         </div>
       </div>
 
@@ -142,6 +144,32 @@ export function CharactersPageClient() {
           <GenderFilter variant="inline" />
         </div>
         <div className="flex items-center gap-2">
+          {status ? (
+            <Badge className="gap-1" variant="outline">
+              Status: {status}
+              <button
+                aria-label="Remove status filter"
+                className="ml-1 inline-flex rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={() => void setQuery({ status: null, page: 1 })}
+                type="button"
+              >
+                <X className="size-3.5" />
+              </button>
+            </Badge>
+          ) : null}
+          {gender ? (
+            <Badge className="gap-1" variant="outline">
+              Gender: {gender}
+              <button
+                aria-label="Remove gender filter"
+                className="ml-1 inline-flex rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={() => void setQuery({ gender: null, page: 1 })}
+                type="button"
+              >
+                <X className="size-3.5" />
+              </button>
+            </Badge>
+          ) : null}
           <Button
             type="button"
             variant="outline"
@@ -149,6 +177,14 @@ export function CharactersPageClient() {
             disabled={!status && !gender}
           >
             Clear filters
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={clearSelection}
+            disabled={selectedCount === 0}
+          >
+            Clear selection
           </Button>
         </div>
       </div>
